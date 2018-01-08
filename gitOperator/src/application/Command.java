@@ -5,7 +5,9 @@ public enum Command {
     Add(2),
     Commit(3),
     Push(4),
-    Reset(5);
+    Reset(5),
+    Pull(6);
+
 
 
     // フィールドの定義

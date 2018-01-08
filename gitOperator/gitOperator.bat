@@ -13,6 +13,7 @@ git add %3 > result.txt
 git commit -m %3 > result.txt
 ) else if %1==Push (
 git push origin %3 > result.txt
-pause
+)else if %1==Pull (
+git pull origin %3 > result.txt
 )
 exit

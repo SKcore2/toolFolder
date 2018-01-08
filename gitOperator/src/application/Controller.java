@@ -1,6 +1,10 @@
 package application;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,6 +57,10 @@ public class Controller implements Initializable {
 	@FXML
 	private Pane parentsDialog;
 
+	@FXML
+	private Pane addPane;
+
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		List<String> listValue = new ArrayList<>();
@@ -60,6 +68,9 @@ public class Controller implements Initializable {
 			listValue.add(command.name());
 		}
 		listValue.stream().forEach(value -> gitActionBox.getItems().add(value));
+		String initialText = getTxtFile(System.getProperty("user.dir") + "Path.txt");
+		System.out.println(initialText);
+		pathTextField.setText(initialText);
 	}
 
 	@FXML
@@ -78,7 +89,7 @@ public class Controller implements Initializable {
 				setResultText(ExecuteBatch.executeBatchTwoArguments(gitCommand, pathTextField.getText(),
 						commitMessage.getText()));
 				commitMessage.setVisible(false);
-
+				commitMessage.clear();
 			} else {
 
 			}
@@ -87,6 +98,16 @@ public class Controller implements Initializable {
 			if (commitMessage.getText() != null) {
 				setResultText(ExecuteBatch.executeBatchTwoArguments(gitCommand, pathTextField.getText(),
 						commitMessage.getText()));
+			} else {
+				setResultText(ExecuteBatch.executeBatchTwoArguments(gitCommand, pathTextField.getText(), "master"));
+			}
+			break;
+		case Pull:
+			if (commitMessage.getText() != null) {
+				setResultText(ExecuteBatch.executeBatchTwoArguments(gitCommand, pathTextField.getText(),
+						commitMessage.getText()));
+				commitMessage.setVisible(false);
+				commitMessage.clear();
 			} else {
 				setResultText(ExecuteBatch.executeBatchTwoArguments(gitCommand, pathTextField.getText(), "master"));
 			}
@@ -107,16 +128,18 @@ public class Controller implements Initializable {
 			break;
 		case Add:
 			System.out.println("Addです。");
-			setResultText(ExecuteBatch.executeBatch(Command.Status,pathTextField.getText()));
+			addPane.setVisible(true);
+			setResultText(ExecuteBatch.executeBatch(Command.Status, pathTextField.getText()));
 			setFileName(getFileList(pathTextField.getText()));
 			break;
 		case Commit:
-			setResultText(ExecuteBatch.executeBatch(Command.Status,pathTextField.getText()));
+			setResultText(ExecuteBatch.executeBatch(Command.Status, pathTextField.getText()));
 			setFileName(getFileList(pathTextField.getText()));
 			commitMessage.setVisible(true);
 			System.out.println("Commitです。");
 			break;
 		case Push:
+			commitMessage.setVisible(true);
 			commitMessage.setPromptText("push先を入力してください");
 			break;
 		default:
@@ -146,7 +169,21 @@ public class Controller implements Initializable {
 		final DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		File selectDirectory = directoryChooser.showDialog(null);
-		pathTextField.setText(selectDirectory.toString());
+		if (selectDirectory != null) {
+			pathTextField.setText(selectDirectory.toString());
+
+			try {
+				String abusolutePath = System.getProperty("user.dir");
+				File file = new File(abusolutePath + "Path.txt");
+				FileWriter filewriter = new FileWriter(file);
+
+				filewriter.write(selectDirectory.toString());
+
+				filewriter.close();
+			} catch (IOException e) {
+				System.out.println(e);
+			}
+		}
 	}
 
 	private void setResultText(String resultTxt) {
@@ -159,6 +196,10 @@ public class Controller implements Initializable {
 		});
 	}
 
+	private void onRepositoryField(ActionEvent event) {
+	}
+
+
 	private List<String> getFileList(String path) {
 		File dir = new File(path);
 		File[] files = dir.listFiles();
@@ -169,5 +210,20 @@ public class Controller implements Initializable {
 			System.out.println((i + 1) + ":    " + file);
 		}
 		return fileList;
+	}
+
+	private String getTxtFile(String path) {
+		  String str = null;
+		try{
+			  File file = new File(path);
+			  BufferedReader br = new BufferedReader(new FileReader(file));
+			  str = br.readLine();
+			  br.close();
+			}catch(FileNotFoundException e){
+			  System.out.println(e);
+			}catch(IOException e){
+			  System.out.println(e);
+			}
+		  return str;
 	}
 }

@@ -14,10 +14,16 @@
       <Button fx:id="referButton" layoutX="605.0" layoutY="120.0" mnemonicParsing="false" onAction="#onClickOpenDialog" text="参照" />
       <Button fx:id="actionButton" layoutX="586.0" layoutY="432.0" mnemonicParsing="false" onAction="#onClickActionButton" text="実行する" />
       <ComboBox fx:id="gitActionBox" layoutX="42.0" layoutY="167.0" onAction="#changeComboBox" prefWidth="150.0" promptText="コマンドを選択" />
-      <ListView fx:id="fileList" layoutX="42.0" layoutY="217.0" prefHeight="200.0" prefWidth="249.0" />
-      <ListView fx:id="addList" layoutX="399.0" layoutY="217.0" prefHeight="200.0" prefWidth="249.0" />
-      <Button fx:id="moveToRight" layoutX="330.0" layoutY="243.0" mnemonicParsing="false" onAction="#onMoveToRight" text="→" />
-      <Button fx:id="moveToLeft" layoutX="330.0" layoutY="348.0" mnemonicParsing="false" onAction="#onMoveToLeft" text="←" />
       <TextField fx:id="commitMessage" layoutX="43.0" layoutY="432.0" prefHeight="25.0" prefWidth="521.0" promptText="コミットメッセージを入力してください。" visible="false" />
+      <Pane fx:id="addPane" layoutX="45.0" layoutY="217.0" prefHeight="200.0" prefWidth="595.0" visible="false">
+         <children>
+            <Button fx:id="moveToLeft" layoutX="288.0" layoutY="141.0" mnemonicParsing="false" onAction="#onMoveToLeft" text="←" />
+            <Button fx:id="moveToRight" layoutX="288.0" layoutY="25.0" mnemonicParsing="false" onAction="#onMoveToRight" text="→" />
+            <ListView fx:id="addList" layoutX="346.0" prefHeight="200.0" prefWidth="249.0" />
+            <ListView fx:id="fileList" prefHeight="200.0" prefWidth="249.0" />
+         </children>
+      </Pane>
+      <TextField fx:id="repositoryField" layoutX="45.0" layoutY="432.0" onAction="#onRepositoryField" promptText="リポジトリを選択してください。" />
+      <ListView fx:id="repositoryList" layoutX="45.0" layoutY="457.0" prefHeight="113.0" prefWidth="149.0" visible="false" />
    </children>
 </Pane>
