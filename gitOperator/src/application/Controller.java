@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 
@@ -32,6 +34,10 @@ public class Controller implements Initializable {
 
 	@FXML
 	private ListView<String> addList;
+
+	@FXML
+	private ListView<String> selectListView;
+
 
 	@FXML
 	private ComboBox<String> gitActionBox;
@@ -68,9 +74,8 @@ public class Controller implements Initializable {
 			listValue.add(command.name());
 		}
 		listValue.stream().forEach(value -> gitActionBox.getItems().add(value));
-		String initialText = getTxtFile(System.getProperty("user.dir") + "Path.txt");
-		System.out.println(initialText);
-		pathTextField.setText(initialText);
+		Optional<String> initialText = getTxtFile(System.getProperty("user.dir") + "Path.txt").stream().findFirst();
+		initialText.ifPresent(value -> pathTextField.setText(value));
 	}
 
 	@FXML
@@ -196,9 +201,16 @@ public class Controller implements Initializable {
 		});
 	}
 
-	private void onRepositoryField(ActionEvent event) {
+	public void onSelectPathField(ActionEvent event) {
+		selectListView.getItems().clear();
+		selectListView.setVisible(true);
+		getTxtFile(System.getProperty("user.dir") + "Path.txt").stream().forEach(path -> selectListView.getItems().add(path));
 	}
 
+	public void onSelectPath(MouseEvent event) {
+		selectListView.setVisible(false);
+		pathTextField.setText(selectListView.getSelectionModel().getSelectedItem());
+	}
 
 	private List<String> getFileList(String path) {
 		File dir = new File(path);
@@ -212,18 +224,21 @@ public class Controller implements Initializable {
 		return fileList;
 	}
 
-	private String getTxtFile(String path) {
-		  String str = null;
+	private List<String> getTxtFile(String path) {
+		List<String> pathList = new ArrayList<>();
 		try{
 			  File file = new File(path);
 			  BufferedReader br = new BufferedReader(new FileReader(file));
-			  str = br.readLine();
+			  String str;
+			  while((str = br.readLine()) != null){
+				  pathList.add(str);
+		        }
 			  br.close();
 			}catch(FileNotFoundException e){
 			  System.out.println(e);
 			}catch(IOException e){
 			  System.out.println(e);
 			}
-		  return str;
+		  return pathList;
 	}
 }

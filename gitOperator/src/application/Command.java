@@ -6,7 +6,9 @@ public enum Command {
     Commit(3),
     Push(4),
     Reset(5),
-    Pull(6);
+    Pull(6),
+    Branch(7);
+
 
 
 

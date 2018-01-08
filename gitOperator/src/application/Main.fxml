@@ -10,7 +10,7 @@
 <Pane fx:id="parentsDialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="692.0" style="-fx-background-color: #e0ffff;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
       <TextArea fx:id="textArea" layoutX="45.0" layoutY="472.0" prefHeight="206.0" prefWidth="603.0" />
-      <TextField fx:id="pathTextField" layoutX="42.0" layoutY="64.0" prefHeight="25.0" prefWidth="603.0" />
+      <TextField fx:id="pathTextField" layoutX="42.0" layoutY="64.0" onAction="#onSelectPathField" prefHeight="25.0" prefWidth="603.0" />
       <Button fx:id="referButton" layoutX="605.0" layoutY="120.0" mnemonicParsing="false" onAction="#onClickOpenDialog" text="参照" />
       <Button fx:id="actionButton" layoutX="586.0" layoutY="432.0" mnemonicParsing="false" onAction="#onClickActionButton" text="実行する" />
       <ComboBox fx:id="gitActionBox" layoutX="42.0" layoutY="167.0" onAction="#changeComboBox" prefWidth="150.0" promptText="コマンドを選択" />
@@ -23,7 +23,12 @@
             <ListView fx:id="fileList" prefHeight="200.0" prefWidth="249.0" />
          </children>
       </Pane>
-      <TextField fx:id="repositoryField" layoutX="45.0" layoutY="432.0" onAction="#onRepositoryField" promptText="リポジトリを選択してください。" />
-      <ListView fx:id="repositoryList" layoutX="45.0" layoutY="457.0" prefHeight="113.0" prefWidth="149.0" visible="false" />
+      <Pane layoutX="45.0" layoutY="432.0" prefHeight="152.0" prefWidth="150.0" visible="false">
+         <children>
+            <TextField fx:id="repositoryField" promptText="リポジトリを選択してください。" />
+            <ListView fx:id="repositoryList" layoutY="25.0" prefHeight="113.0" prefWidth="149.0" />
+         </children>
+      </Pane>
+      <ListView fx:id="selectListView" layoutX="42.0" layoutY="89.0" onMouseClicked="#onSelectPath" onMousePressed="#onSelectPath" prefHeight="200.0" prefWidth="603.0" visible="false" />
    </children>
 </Pane>
