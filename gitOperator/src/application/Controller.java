@@ -108,11 +108,11 @@ public class Controller implements Initializable {
 		case Add:
 			System.out.println("Addです。");
 			setResultText(ExecuteBatch.executeBatch(Command.Status,pathTextField.getText()));
-			setFileName(getFileList("C:\\Users\\skcor\\Desktop\\toolFolder\\toolFolder\\gitOperator\\"));
+			setFileName(getFileList(pathTextField.getText()));
 			break;
 		case Commit:
 			setResultText(ExecuteBatch.executeBatch(Command.Status,pathTextField.getText()));
-			setFileName(getFileList("C:\\Users\\skcor\\Desktop\\toolFolder\\toolFolder\\gitOperator\\"));
+			setFileName(getFileList(pathTextField.getText()));
 			commitMessage.setVisible(true);
 			System.out.println("Commitです。");
 			break;

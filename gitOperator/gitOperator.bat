@@ -12,6 +12,7 @@ git add %3 > result.txt
 ) else if %1==Commit (
 git commit -m %3 > result.txt
 ) else if %1==Push (
-echo git push origin %3 > result.txt
+git push origin %3 > result.txt
+pause
 )
 exit
