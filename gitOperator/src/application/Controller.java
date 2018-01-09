@@ -1,6 +1,7 @@
 package application;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -179,12 +180,23 @@ public class Controller implements Initializable {
 
 			try {
 				String abusolutePath = System.getProperty("user.dir");
-				File file = new File(abusolutePath + "Path.txt");
-				FileWriter filewriter = new FileWriter(file);
+			    List <String> beforeText = getTxtFile(abusolutePath + "Path.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter((abusolutePath + "Path.txt")));
+				List<String> writeText = new ArrayList<>();
+				writeText.add(selectDirectory.toString());
+				beforeText.stream().forEach(value -> writeText.add(value));
+				System.out.println(writeText);
 
-				filewriter.write(selectDirectory.toString());
+				writeText.stream().forEach(value ->{
+					try {
+						bw.write(value);
+						bw.newLine();;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
 
-				filewriter.close();
+				bw.close();
 			} catch (IOException e) {
 				System.out.println(e);
 			}

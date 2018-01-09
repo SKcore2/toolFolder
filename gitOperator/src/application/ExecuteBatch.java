@@ -1,6 +1,9 @@
 package application;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,6 +20,7 @@ public class ExecuteBatch {
 			Process executeGitCommand = Runtime.getRuntime().exec(cmds);
 
 			int returnValue = executeGitCommand.waitFor();
+
 			if (returnValue == 0) {
 				resultText = getResultText(
 						(abusolutePath + "\\result.txt"));
@@ -66,7 +70,6 @@ public class ExecuteBatch {
 			Process executeGitCommand = Runtime.getRuntime().exec(cmds);
 
 			int returnValue = executeGitCommand.waitFor();
-			System.out.println(returnValue);
 			if (returnValue == 0) {
 				resultText = getResultText(
 						(abusolutePath + "\\result.txt"));
@@ -78,6 +81,29 @@ public class ExecuteBatch {
 		}
 		return resultText;
 	}
+
+	public static String executeBatchTest(Command gitCommand, String path) throws IOException, InterruptedException {
+		  String abusolutePath = System.getProperty("user.dir");
+		String cmds[] = { "cmd.exe", "/c", "start",
+				abusolutePath + "\\gitOperator.bat", gitCommand.name(),path };
+		String resultText = null;
+			Process executeGitCommand = Runtime.getRuntime().exec(cmds);
+
+			InputStream is = executeGitCommand.getErrorStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			try {
+			for (;;) {
+			resultText = br.readLine();
+			if (resultText == null)
+			break;
+			System.out.println(resultText);
+			}
+			} finally {
+			br.close();
+			};
+			return resultText;
+	}
+
 
 	public static String getResultText(final String path) throws IOException {
 		return Files.lines(Paths.get(path), Charset.forName("UTF-8"))
